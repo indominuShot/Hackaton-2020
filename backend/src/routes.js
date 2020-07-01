@@ -2,8 +2,8 @@ const express = require('express');
 
 const routes = express.Router();
 
-routes.get('/', (req, res) => {
-    return res.json({ message: 'hello World!' });
-});
+const StudentController = require('./Controllers/StudentController');
+
+routes.get('/students', StudentController.index);
 
 module.exports = routes;
