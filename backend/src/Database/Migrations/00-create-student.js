@@ -1,7 +1,7 @@
 const Knex = require('knex');
 
 module.exports = {
-    up() {
+    async up() {
         return Knex.schema.createTable('students', (table) => {
             table.increments('id').primary();
             table.string('name').notNullable();
