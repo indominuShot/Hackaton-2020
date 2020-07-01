@@ -5,6 +5,7 @@ exports.up = (Knex) => {
         table.string('email').notNullable();
         table.string('password').notNullable();
         table.string('cnpj').notNullable();
+        table.string('user').notNullable();
     });
 };
 

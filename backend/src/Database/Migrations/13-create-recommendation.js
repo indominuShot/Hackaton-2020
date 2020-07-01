@@ -1,7 +1,7 @@
 exports.up = (Knex) => {
     return Knex.schema.createTable('recommendation', (table) => {
         table.increments('id').primary();
-
+        table.text('comment').notNullable();
         table
             .integer('teacher_id')
             .notNullable()

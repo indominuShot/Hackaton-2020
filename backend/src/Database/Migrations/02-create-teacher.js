@@ -6,6 +6,7 @@ exports.up = (Knex) => {
         table.string('password').notNullable();
         table.string('cpf').notNullable();
         table.string('age').notNullable();
+        table.string('user').notNullable();
     });
 };
 

@@ -4,8 +4,8 @@ exports.up = (Knex) => {
         table.string('name').notNullable();
         table.string('email').notNullable();
         table.string('password').notNullable();
-        table.string('cpf').notNullable();
         table.string('age').notNullable();
+        table.string('user').notNullable();
     });
 };
 

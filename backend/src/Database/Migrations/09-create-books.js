@@ -2,7 +2,7 @@ exports.up = (Knex) => {
     return Knex.schema.createTable('books', (table) => {
         table.increments('id').primary();
         table.string('titulo').notNullable();
-        table.string('sinopse').notNullable();
+        table.text('sinopse').notNullable();
         table.string('category').notNullable();
         table.string('genre').notNullable();
         table.string('author').notNullable();
