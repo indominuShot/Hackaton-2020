@@ -1,18 +1,14 @@
-const Knex = require('knex');
+exports.up = (Knex) => {
+    return Knex.schema.createTable('students', (table) => {
+        table.increments('id').primary();
+        table.string('name').notNullable();
+        table.string('email').notNullable();
+        table.string('password').notNullable();
+        table.string('cpf').notNullable();
+        table.string('age').notNullable();
+    });
+};
 
-module.exports = {
-    async up() {
-        return Knex.schema.createTable('students', (table) => {
-            table.increments('id').primary();
-            table.string('name').notNullable();
-            table.string('email').notNullable();
-            table.string('password').notNullable();
-            table.string('cpf').notNullable();
-            table.string('age').notNullable();
-        });
-    },
-
-    down() {
-        return Knex.schema.dropTable('students');
-    },
+exports.down = (Knex) => {
+    return Knex.schema.dropTable('students');
 };

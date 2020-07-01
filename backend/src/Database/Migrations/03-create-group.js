@@ -1,14 +1,10 @@
-const Knex = require('knex');
+exports.up = (Knex) => {
+    return Knex.schema.createTable('groups', (table) => {
+        table.increments('id').primary();
+        table.string('name').notNullable();
+    });
+};
 
-module.exports = {
-    up() {
-        return Knex.schema.createTable('groups', (table) => {
-            table.increments('id').primary();
-            table.string('name').notNullable();
-        });
-    },
-
-    down() {
-        return Knex.schema.dropTable('groups');
-    },
+exports.down = (Knex) => {
+    return Knex.schema.dropTable('groups');
 };
