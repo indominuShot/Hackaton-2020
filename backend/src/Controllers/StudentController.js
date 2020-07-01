@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const connection = require('../Database/connections');
 
 module.exports = {
@@ -19,11 +20,30 @@ module.exports = {
             name, email, password, age,
         } = req.body;
 
+        // Criptografia de senha
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userType = 'Student';
+
+        // Verifica se já existe um usuário com o mesmo email
+        const userExist = await connection('students')
+            .select('email')
+            .where({
+                email,
+            })
+            .first();
+
+        if (userExist) {
+            return res
+                .status(401)
+                .json({ Message: 'Este usuário já existe!' });
+        }
+
         const response = await connection('students').insert({
             name,
             email,
-            password,
+            password: hashedPassword,
             age,
+            user: userType,
         });
 
         if (!response) {
@@ -31,6 +51,7 @@ module.exports = {
                 Message: 'Não foi possível cadastrar este aluno.',
             });
         }
-        return res.status(200);
+
+        return res.status(200).json(response);
     },
 };
