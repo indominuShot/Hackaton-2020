@@ -1,25 +1,21 @@
-const Knex = require('knex');
+exports.up = (Knex) => {
+    return Knex.schema.createTable('recommendation', (table) => {
+        table.increments('id').primary();
 
-module.exports = {
-    up() {
-        return Knex.schema.createTable('recommendation', (table) => {
-            table.increments('id').primary();
-            
-            table
-                .integer('idTeacher')
-                .notNullable()
-                .references('id')
-                .inTable('teachers');
+        table
+            .integer('teacher_id')
+            .notNullable()
+            .references('id')
+            .inTable('teachers');
 
-            table
-                .integer('idBook')
-                .notNullable()
-                .references('id')
-                .inTable('books');
-        });
-    },
+        table
+            .integer('book_id')
+            .notNullable()
+            .references('id')
+            .inTable('books');
+    });
+};
 
-    down() {
-        return Knex.schema.dropTable('recommendation');
-    },
+exports.down = (Knex) => {
+    return Knex.schema.dropTable('recommendation');
 };
