@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const connection = require('../Database/connections');
+const generateToken = require('./utils/generateToken');
 
 module.exports = {
+    // LISTAGEM DE ESTUDANTES
     async index(req, res) {
         const response = await connection('students').select('*');
 
@@ -12,9 +14,17 @@ module.exports = {
             });
         }
 
-        return res.status(200).json(response);
+        // Remove a senha do retorno dos dados
+        const parsedResponse = response.map((student) => {
+            student.password = undefined;
+
+            return student;
+        });
+
+        return res.status(200).json(parsedResponse);
     },
 
+    // CRIAÇÃO DE ESTUDANTE
     async create(req, res) {
         const {
             name, email, password, age,
@@ -53,5 +63,38 @@ module.exports = {
         }
 
         return res.status(200).json(response);
+    },
+
+    async login(req, res) {
+        const { email, password } = req.body;
+
+        const userExists = await connection('students')
+            .select('email', 'password', 'user')
+            .where({ email })
+            .first();
+
+        if (!userExists) {
+            return res
+                .status(404)
+                .json({ Message: 'Usuário ou senha incorretos!' });
+        }
+
+        if (!(await bcrypt.compare(password, userExists.password))) {
+            return res
+                .status(404)
+                .json({ Message: 'Usuário ou senha incorretos!' });
+        }
+
+        userExists.password = undefined;
+
+        const { user } = userExists;
+
+        return res.json({
+            userExists,
+            userToken: generateToken({
+                userEmail: email,
+                userType: user,
+            }),
+        });
     },
 };
